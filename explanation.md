@@ -212,3 +212,6 @@ Terraform manages infrastructure declaratively.
 Drift occurs only when Terraform-managed resources are changed outside Terraform.
 Dynamic systems like ASG, Cluster Autoscaler, or CAST AI modify runtime values.
 To prevent conflict, we use lifecycle ```ignore_changes``` for dynamic attributes like desired_capacity and ``` terraform plan -refresh-only ``` command to know whether drifted arised or not.
+
+## 8.Drift Detection using automation
+![Drift Detection using automation](image/Screenshot 2026-02-22 135433.png)
