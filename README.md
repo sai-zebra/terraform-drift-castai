@@ -12,7 +12,7 @@ terraform state list
 
 ## follow the below commands to make drift
 
-**1. Create the SG and CORRECTLY capture ONLY the ID**
+**1. Create the SG and capture ONLY the ID**
 ```
 export SG_ID=$(aws ec2 create-security-group --group-name "sg_web" --description "allow 8080" --output text --query 'GroupId')
 ```

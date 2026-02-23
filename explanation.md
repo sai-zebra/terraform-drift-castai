@@ -34,16 +34,19 @@ ec2-2 is not in .tf or terraform.tfstate
 
 Therefore, terraform plan will not show any change.
 
-When Drift WOULD Occur
+**When Drift WOULD Occur**
+
 If we:
 
-Change ec2-1 instance type manually
+ * Change ec2-1 instance type 
 
-Modify its security group manually
+ * Modify its security group 
 
-Add EBS manually
+ * Add EBS 
 
-Stop/start instance manually
+ * Stop/start instance 
+
+ through script/manually
 
 Then:
 ```
