@@ -34,7 +34,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-       # Inject SSH keys into Terraform variables
+      # Inject SSH keys into Terraform variables
       - name: Set SSH public key for Terraform
         run: echo "TF_VAR_ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" >> $GITHUB_ENV
 
@@ -62,7 +62,7 @@ jobs:
           EC2_IP=$(terraform output -raw public_ip)
           INSTANCE_ID=$(terraform output -raw instance_id)
 
-          echo "EC2 INSTANCE ID: $INSTANCE_ID" >> $GITHUB_ENV
+          echo "EC2 INSTANCE ID:$INSTANCE_ID" >> $GITHUB_ENV
           echo "EC2_PUBLIC_IP=$EC2_IP" >> $GITHUB_ENV
 
           echo "EC2 Public IP is: $EC2_IP" 
