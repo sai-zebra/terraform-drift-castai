@@ -23,6 +23,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+        # Inject SSH keys into Terraform variables
+      - name: Set SSH public key for Terraform
+        run: echo "TF_VAR_ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" >> $GITHUB_ENV
+
+      - name: Set SSH private key for Terraform
+        run: |
+          echo "TF_VAR_ssh_private_key<<EOF" >> $GITHUB_ENV
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Terraform Init
         run: terraform init
 
