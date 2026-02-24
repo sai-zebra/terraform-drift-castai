@@ -50,11 +50,14 @@ jobs:
 
       - name: Terraform Plan with Drift Detection
         id: plan
+        shell: bash
         run: |
+          set +e
           terraform plan -detailed-exitcode -no-color > plan_output.txt 2>&1
           EXIT_CODE=$?
           echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
           cat plan_output.txt
+          exit 0
 
       - name:  send email on drift
         if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
