@@ -49,9 +49,14 @@ jobs:
       #   run: terraform plan -refresh-only #detects drift 
 
       - name: Terraform Plan with Drift Detection
-        run: terraform plan -detailed-exitcode -no-color
-         echo "plan_exit_code=$?" >> $GITHUB_OUTPUT
-        continue-on-error: true # allow workflow to continue even if drift is detected
+        id: plan
+        run: |
+          set +e  # Don't exit on error
+          terraform plan -detailed-exitcode -no-color > plan_output.txt 2>&1
+          EXIT_CODE=$?
+          echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
+          cat plan_output.txt
+          exit 0  # Always succeed so workflow continues
 
       - name:  send email on drift
         if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
