@@ -20,4 +20,11 @@ resource "aws_instance" "example" {
     source      = "script.sh"
     destination = "/home/ec2-user/script.sh"
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ec2-user/script.sh",
+      "/home/ec2-user/script.sh"
+    ]
+  }
 }
