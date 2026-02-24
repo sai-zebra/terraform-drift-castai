@@ -1,71 +1,71 @@
-# name: Terraform Drift Detection
-# on:
-# #   schedule:
-# #     - cron: '0 18 * * *' # Runs daily at 6pm
-#   workflow_dispatch:
+name: Terraform Drift Detection
+on:
+#   schedule:
+#     - cron: '0 18 * * *' # Runs daily at 6pm
+  workflow_dispatch:
 
-# jobs:
-#   drift-detection:
-#     name: Detect Infrastructure Drift
-#     runs-on: ubuntu-latest
+jobs:
+  drift-detection:
+    name: Detect Infrastructure Drift
+    runs-on: ubuntu-latest
 
-#     env:
-#       AWS_REGION: ${{ secrets.AWS_REGION }}
-#       TF_VAR_ami: ${{ secrets.TF_VAR_AMI }}
-#       TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
-#       TF_VAR_instance_type: ${{ secrets.TF_VAR_INSTANCE_TYPE }} 
-#       TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      TF_VAR_ami: ${{ secrets.TF_VAR_AMI }}
+      TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
+      TF_VAR_instance_type: ${{ secrets.TF_VAR_INSTANCE_TYPE }} 
+      TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-#       - name: Set up Terraform
-#         uses: hashicorp/setup-terraform@v3
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
 
-#       - name: Configure AWS Credentials
-#         uses: aws-actions/configure-aws-credentials@v4
-#         with:
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           aws-region: ${{ secrets.AWS_REGION }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-#       # inject SSH keys into Terraform variables
-#       - name: Set SSH public key for Terraform
-#         run: echo "TF_VAR_ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" >> $GITHUB_ENV
+      # inject SSH keys into Terraform variables
+      - name: Set SSH public key for Terraform
+        run: echo "TF_VAR_ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" >> $GITHUB_ENV
 
-#       - name: Set SSH private key for Terraform
-#         run: |
-#           echo "TF_VAR_ssh_private_key<<EOF" >> $GITHUB_ENV
-#           echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
-#           echo "EOF" >> $GITHUB_ENV  
+      - name: Set SSH private key for Terraform
+        run: |
+          echo "TF_VAR_ssh_private_key<<EOF" >> $GITHUB_ENV
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV  
 
-#       - name: Terraform Init
-#         run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-#       # - name: Terraform Plan
-#       #   run: terraform plan -refresh-only #detects drift 
+      # - name: Terraform Plan
+      #   run: terraform plan -refresh-only #detects drift 
 
-#       - name: Terraform Plan with Drift Detection
-#         run: terraform plan -refresh-only -detailed-exitcode -no-color
-#          echo "plan_exit_code=$?" >> $GITHUB_OUTPUT
-#         continue-on-error: true # allow workflow to continue even if drift is detected
+      - name: Terraform Plan with Drift Detection
+        run: terraform plan -refresh-only -detailed-exitcode -no-color
+         echo "plan_exit_code=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true # allow workflow to continue even if drift is detected
 
-#       - name:  send email on drift
-#         if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
-#         uses: dawidd6/action-send-mail@v3
-#         with:
-#           server_address: smtp.gmail.com
-#           server_port: 465
-#           secure: true
-#           username: ${{ secrets.EMAIL_USERNAME }}  
-#           password: ${{ secrets.EMAIL_PASSWORD }}
-#           subject: "Terraform Drift Detected"
-#           body: "Drift has been detected in the infrastructure. Please review the Terraform plan output for details."
+      - name:  send email on drift
+        if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}  
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Terraform Drift Detected"
+          body: "Drift has been detected in the infrastructure. Please review the Terraform plan output for details."
 
-#           Repository: ${{ github.repository }}
-#           Workflow: ${{ github.workflow }}
-#           Run ID: ${{ github.run_id }}
+          Repository: ${{ github.repository }}
+          Workflow: ${{ github.workflow }}
+          Run ID: ${{ github.run_id }}
 
-#           to: ${{ secrets.EMAIL_TO }}  #recipient mail id
-#           from: ${{ secrets.EMAIL_USERNAME }}  #sender mail id
+          to: ${{ secrets.EMAIL_TO }}  #recipient mail id
+          from: ${{ secrets.EMAIL_USERNAME }}  #sender mail id
