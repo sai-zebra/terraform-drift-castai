@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e #Exits immediately if a command exits with a non-zero status
+set -e #Exits immediately if a command exits with a non-zero status (+e is for continue on error)
 
 echo "updating instance"
 yum update -y

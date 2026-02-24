@@ -59,7 +59,7 @@ jobs:
       # get Terraform output details
       - name: Get EC2 Public IP
         run: |
-          EC2_IP=$(terraform output -raw ec2_public_ip)
+          EC2_IP=$(terraform output -raw public_ip)
           INSTANCE_ID=$(terraform output -raw instance_id)
 
           echo "EC2 INSTANCE ID: $INSTANCE_ID" >> $GITHUB_ENV
