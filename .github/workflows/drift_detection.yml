@@ -55,12 +55,9 @@ jobs:
           set +e
           terraform plan -detailed-exitcode -no-color > plan_output.txt 2>&1
           EXIT_CODE=$?
-          echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "exitcode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
           cat plan_output.txt
-          exit 0
-
-      - name: Show exit code
-        run: echo "Terraform Plan Exit Code: ${{ steps.plan.outputs.exitcode }}"    
+          exit 0  
 
       - name:  send email on drift
         if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
