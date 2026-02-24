@@ -15,3 +15,14 @@ variable "key_name" {
   description =  "The name of the key pair to use for SSH access to the EC2 instance"
   type = string
 }
+
+variable "ssh_public_key" {
+  description = "The public SSH key to use for the AWS key pair"
+  type = string
+}
+
+variable "ssh_private_key" {
+  description = "The private SSH key to use for connecting to the EC2 instance"
+  type = string
+}
+
