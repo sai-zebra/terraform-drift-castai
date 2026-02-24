@@ -11,10 +11,10 @@
 
 #     env:
 #       AWS_REGION: ${{ secrets.AWS_REGION }}
-      # TF_VAR_ami: ${{ secrets.TF_VAR_AMI }}
-      # TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
-      # TF_VAR_instance_type: ${{ secrets.TF_VAR_INSTANCE_TYPE }} 
-      # TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
+#       TF_VAR_ami: ${{ secrets.TF_VAR_AMI }}
+#       TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
+#       TF_VAR_instance_type: ${{ secrets.TF_VAR_INSTANCE_TYPE }} 
+#       TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
 
 #     steps:
 #       - name: Checkout code
@@ -30,18 +30,21 @@
 #           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #           aws-region: ${{ secrets.AWS_REGION }}
 
-      #inject SSH keys into Terraform variables
-      # - name: Set SSH public key for Terraform
-      #   run: echo "TF_VAR_ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" >> $GITHUB_ENV
+#       # inject SSH keys into Terraform variables
+#       - name: Set SSH public key for Terraform
+#         run: echo "TF_VAR_ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" >> $GITHUB_ENV
 
-      # - name: Set SSH private key for Terraform
-      #   run: |
-      #     echo "TF_VAR_ssh_private_key<<EOF" >> $GITHUB_ENV
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
-      #     echo "EOF" >> $GITHUB_ENV  
+#       - name: Set SSH private key for Terraform
+#         run: |
+#           echo "TF_VAR_ssh_private_key<<EOF" >> $GITHUB_ENV
+#           echo "${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+#           echo "EOF" >> $GITHUB_ENV  
 
 #       - name: Terraform Init
 #         run: terraform init
 
-#       - name: Terraform Plan
-#         run: terraform plan -refresh-only #detects drift 
+#       # - name: Terraform Plan
+#       #   run: terraform plan -refresh-only #detects drift 
+
+#       - name: Terraform Plan with Drift Detection
+#         run: terraform plan -detailed-exitcode || true #detects drift and returns non-zero exit code if drift is detected
