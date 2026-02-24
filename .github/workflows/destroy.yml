@@ -8,6 +8,9 @@ jobs:
 
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
+      TF_VAR_ami: ${{ secrets.TF_VAR_AMI }}
+      TF_VAR_instance_type: ${{ secrets.TF_VAR_INSTANCE_TYPE }} 
+      TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
 
     steps:
       - name: Checkout code
