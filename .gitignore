@@ -5,6 +5,7 @@
 .terraform.tfstate
 .terraform.tfstate.backup
 .tfvars
+*.tfvars
 key
 key.pub
 *.pem
