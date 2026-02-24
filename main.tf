@@ -7,8 +7,8 @@ resource "aws_instance" "example" {
   ami                    = var.ami
   key_name               = aws_key_pair.deployer.key_name
   instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.sg_ssh.id, aws_security_group.sg_web.id]
-#   vpc_security_group_ids = [aws_security_group.sg_ssh.id]
+  # vpc_security_group_ids = [aws_security_group.sg_ssh.id, aws_security_group.sg_web.id]
+  vpc_security_group_ids = [aws_security_group.sg_ssh.id]
   user_data              = <<-EOF
               #!/bin/bash
               yum update -y
@@ -41,16 +41,16 @@ resource "aws_security_group" "sg_ssh" {
   }
 }
 
-resource "aws_security_group" "sg_web" {
-  name        = "sg_web"
-  description = "allow 8080"
-}
+# resource "aws_security_group" "sg_web" {
+#   name        = "sg_web"
+#   description = "allow 8080"
+# }
 
-resource "aws_security_group_rule" "sg_web" {
-  type      = "ingress"
-  to_port   = "8080"
-  from_port = "8080"
-  protocol  = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_web.id
-}
+# resource "aws_security_group_rule" "sg_web" {
+#   type      = "ingress"
+#   to_port   = "8080"
+#   from_port = "8080"
+#   protocol  = "tcp"
+#   cidr_blocks = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.sg_web.id
+# }
