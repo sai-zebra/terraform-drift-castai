@@ -47,4 +47,25 @@
 #       #   run: terraform plan -refresh-only #detects drift 
 
 #       - name: Terraform Plan with Drift Detection
-#         run: terraform plan -detailed-exitcode || true #detects drift and returns non-zero exit code if drift is detected
+#         run: terraform plan -refresh-only -detailed-exitcode -no-color
+#          echo "plan_exit_code=$?" >> $GITHUB_OUTPUT
+#         continue-on-error: true # allow workflow to continue even if drift is detected
+
+#       - name:  send email on drift
+#         if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 465
+#           secure: true
+#           username: ${{ secrets.EMAIL_USERNAME }}  
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: "Terraform Drift Detected"
+#           body: "Drift has been detected in the infrastructure. Please review the Terraform plan output for details."
+
+#           Repository: ${{ github.repository }}
+#           Workflow: ${{ github.workflow }}
+#           Run ID: ${{ github.run_id }}
+
+#           to: ${{ secrets.EMAIL_TO }}  #recipient mail id
+#           from: ${{ secrets.EMAIL_USERNAME }}  #sender mail id
