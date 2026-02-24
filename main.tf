@@ -24,7 +24,7 @@ resource "aws_instance" "example" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ec2-user/script.sh",
-      "/home/ec2-user/script.sh"
+      "sudo /home/ec2-user/script.sh"
     ]
   }
 }
