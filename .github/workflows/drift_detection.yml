@@ -51,7 +51,6 @@ jobs:
       - name: Terraform Plan with Drift Detection
         id: plan
         run: |
-          # set +e  # Don't exit on error
           terraform plan -detailed-exitcode -no-color > plan_output.txt 2>&1
           EXIT_CODE=$?
           echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
