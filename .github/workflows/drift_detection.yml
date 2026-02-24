@@ -59,6 +59,9 @@ jobs:
           cat plan_output.txt
           exit 0
 
+      - name: Show exit code
+        run: echo "Terraform Plan Exit Code: ${{ steps.plan.outputs.exitcode }}"    
+
       - name:  send email on drift
         if: steps.plan.outputs.exitcode == '2' # exit code 2 indicates drift detected
         uses: dawidd6/action-send-mail@v3
